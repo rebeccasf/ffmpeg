@@ -8,6 +8,7 @@ import("ffmpeg_options.gni")
 import("//build/buildflag_header.gni")
 import("//build/config/compiler/compiler.gni")
 import("//build/config/sanitizers/sanitizers.gni")
+import("//build/config/sysroot.gni")
 
 # Path to platform configuration files.
 platform_config_root =
@@ -435,6 +436,7 @@ if (is_component_ffmpeg) {
       # Fixes warnings PIC relocation when building as component.
       ldflags += [
         "-Wl,-Bsymbolic",
+        "-Wl,-L../../build/linux/debian_sid_riscv64-sysroot/usr/lib/riscv64-linux-gnu",
         "-L",
         rebase_path(target_gen_dir, root_build_dir),
       ]
