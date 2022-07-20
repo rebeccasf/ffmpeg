@@ -40,7 +40,7 @@ BRANDINGS = [
 ARCH_MAP = {
     'android': ['ia32', 'x64', 'arm-neon', 'arm64'],
     'linux': [
-        'ia32', 'x64', 'noasm-x64', 'arm', 'arm-neon', 'arm64'
+        'ia32', 'x64', 'noasm-x64', 'arm', 'arm-neon', 'arm64', 'riscv64'
     ],
     'mac': ['x64', 'arm64'],
     'win': ['ia32', 'x64', 'arm64'],
@@ -142,6 +142,8 @@ def DetermineHostOsAndArch():
     host_arch = 'mips64el'
   elif platform.machine().startswith('arm'):
     host_arch = 'arm'
+  elif platform.machine() == 'riscv64':
+    host_arch = 'riscv64'
   else:
     return None
 
@@ -893,6 +895,20 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
             '--extra-cflags=--target=mips64el-linux-gnuabi64',
             '--extra-ldflags=--target=mips64el-linux-gnuabi64',
         ])
+    elif target_arch == 'riscv64':
+      configure_flags['Common'].extend([
+          '--arch=riscv',
+          '--enable-cross-compile',
+          '--target-os=linux',
+          '--sysroot=' + os.path.join(
+              CHROMIUM_ROOT_DIR, 'build/linux/debian_sid_riscv64-sysroot'),
+          '--extra-cflags=--target=riscv64-linux-gnu',
+          '--extra-cflags=-mno-relax',
+          '--extra-cflags=-mabi=lp64d',
+          '--extra-ldflags=--target=riscv64-linux-gnu',
+          '--extra-ldflags=-mno-relax',
+          '--extra-ldflags=-L/usr/riscv64-linux-gnu/lib',
+      ])
     else:
       print(
           'Error: Unknown target arch %r for target OS %r!' % (target_arch,
@@ -909,9 +925,9 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
   if 'win' not in target_os and 'android' not in target_os:
     configure_flags['Common'].extend([
         '--enable-pic',
-        '--cc=clang',
-        '--cxx=clang++',
-        '--ld=clang',
+        '--cc=' + os.path.join(CHROMIUM_ROOT_DIR + '/third_party/llvm-build/Release+Asserts/bin/clang'),
+        '--cxx=' + os.path.join(CHROMIUM_ROOT_DIR + '/third_party/llvm-build/Release+Asserts/bin/clang++'),
+        '--ld=' + os.path.join(CHROMIUM_ROOT_DIR + '/third_party/llvm-build/Release+Asserts/bin/clang'),
     ])
 
     # Clang Linux will use the first 'ld' it finds on the path, which will
@@ -919,7 +935,7 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
     # ld.lld, to ensure that things like cross-compilation and LTO work.
     # This does not work for ia32 and is always used on mac.
     if target_arch != 'ia32' and target_os != 'mac':
-      configure_flags['Common'].append('--extra-ldflags=-fuse-ld=lld')
+      configure_flags['Common'].append('--extra-ldflags=-fuse-ld=ld')
 
   # Should be run on Mac, unless we're cross-compiling on Linux.
   if target_os == 'mac':
