@@ -40,7 +40,7 @@ BRANDINGS = [
 ARCH_MAP = {
     'android': ['ia32', 'x64', 'arm-neon', 'arm64'],
     'linux': [
-        'ia32', 'x64', 'noasm-x64', 'arm', 'arm-neon', 'arm64'
+        'ia32', 'x64', 'noasm-x64', 'arm', 'arm-neon', 'arm64', 'riscv64'
     ],
     'mac': ['x64', 'arm64'],
     'win': ['ia32', 'x64', 'arm64'],
@@ -142,6 +142,8 @@ def DetermineHostOsAndArch():
     host_arch = 'mips64el'
   elif platform.machine().startswith('arm'):
     host_arch = 'arm'
+  elif platform.machine() == 'riscv64':
+    host_arch = 'riscv64'
   else:
     return None
 
@@ -893,6 +895,18 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
             '--extra-cflags=--target=mips64el-linux-gnuabi64',
             '--extra-ldflags=--target=mips64el-linux-gnuabi64',
         ])
+    elif target_arch == 'riscv64':
+      configure_flags['Common'].extend([
+          '--arch=riscv64',
+          '--enable-cross-compile',
+          '--target-os=linux',
+          '--sysroot=/home/rebecca.chang/backup/deb-jh7100/rfs',
+          '--extra-cflags=--target=riscv64-linux-gnu',
+          '--extra-cflags=-mno-relax',
+          '--extra-cflags=-mabi=lp64d',
+          '--extra-ldflags=--target=riscv64-linux-gnu',
+          '--extra-ldflags=-mno-relax',
+      ])
     else:
       print(
           'Error: Unknown target arch %r for target OS %r!' % (target_arch,
