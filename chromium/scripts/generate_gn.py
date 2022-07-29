@@ -78,7 +78,7 @@ _Attrs = ('ARCHITECTURE', 'TARGET', 'PLATFORM')
 Attr = collections.namedtuple('Attr', _Attrs)(*_Attrs)
 SUPPORT_MATRIX = {
     Attr.ARCHITECTURE:
-        set(['ia32', 'x64', 'arm', 'arm64', 'arm-neon']),
+        set(['ia32', 'x64', 'arm', 'arm64', 'arm-neon', 'riscv64']),
     Attr.TARGET:
         set(['Chromium', 'Chrome', 'ChromeOS']),
     Attr.PLATFORM:
@@ -315,6 +315,8 @@ class SourceSet(object):
         arch_condition = None
       elif condition.ARCHITECTURE == 'arm-neon':
         arch_condition = 'current_cpu == "arm" && arm_use_neon'
+      elif condition.ARCHITECTURE == 'riscv64':
+        arch_condition = 'current_cpu == "riscv64"'
       elif condition.ARCHITECTURE == 'ia32':
         arch_condition = 'current_cpu == "x86"'
       else:
