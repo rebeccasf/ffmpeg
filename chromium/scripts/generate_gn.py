@@ -78,7 +78,7 @@ _Attrs = ('ARCHITECTURE', 'TARGET', 'PLATFORM')
 Attr = collections.namedtuple('Attr', _Attrs)(*_Attrs)
 SUPPORT_MATRIX = {
     Attr.ARCHITECTURE:
-        set(['ia32', 'x64', 'arm', 'arm64', 'arm-neon']),
+        set(['ia32', 'x64', 'arm', 'arm64', 'arm-neon', 'riscv64']),
     Attr.TARGET:
         set(['Chromium', 'Chrome', 'ChromeOS']),
     Attr.PLATFORM:
@@ -315,6 +315,8 @@ class SourceSet(object):
         arch_condition = None
       elif condition.ARCHITECTURE == 'arm-neon':
         arch_condition = 'current_cpu == "arm" && arm_use_neon'
+      elif condition.ARCHITECTURE == 'riscv64':
+        arch_condition = 'current_cpu == "riscv64"'
       elif condition.ARCHITECTURE == 'ia32':
         arch_condition = 'current_cpu == "x86"'
       else:
@@ -957,7 +959,7 @@ def main():
       for platform in SUPPORT_MATRIX[Attr.PLATFORM]:
         # Assume build directory is of the form build.$arch.$platform/$target.
         name = ''.join(['build.', arch, '.', platform])
-        build_dir = os.path.join(options.build_dir, name, target)
+        build_dir = os.path.join(options.build_dir, target)
         if not os.path.exists(build_dir):
           continue
         print(f'Processing build directory: {name}')
