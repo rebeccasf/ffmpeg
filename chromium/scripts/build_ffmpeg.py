@@ -900,12 +900,14 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
           '--arch=riscv64',
           '--enable-cross-compile',
           '--target-os=linux',
-          '--sysroot=/home/rebecca.chang/backup/deb-jh7100/rfs',
+          '--sysroot=' + os.path.join(
+              CHROMIUM_ROOT_DIR, 'build/linux/debian_sid_riscv64-sysroot',
           '--extra-cflags=--target=riscv64-linux-gnu',
           '--extra-cflags=-mno-relax',
           '--extra-cflags=-mabi=lp64d',
           '--extra-ldflags=--target=riscv64-linux-gnu',
           '--extra-ldflags=-mno-relax',
+          '--extra-ldflags=-L/usr/riscv64-linux-gnu/lib',
       ])
     else:
       print(
@@ -933,7 +935,7 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
     # ld.lld, to ensure that things like cross-compilation and LTO work.
     # This does not work for ia32 and is always used on mac.
     if target_arch != 'ia32' and target_os != 'mac':
-      configure_flags['Common'].append('--extra-ldflags=-fuse-ld=lld')
+      configure_flags['Common'].append('--extra-ldflags=-fuse-ld=ld')
 
   # Should be run on Mac, unless we're cross-compiling on Linux.
   if target_os == 'mac':
