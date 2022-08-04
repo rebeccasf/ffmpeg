@@ -959,7 +959,7 @@ def main():
       for platform in SUPPORT_MATRIX[Attr.PLATFORM]:
         # Assume build directory is of the form build.$arch.$platform/$target.
         name = ''.join(['build.', arch, '.', platform])
-        build_dir = os.path.join(options.build_dir, target)
+        build_dir = os.path.join(options.build_dir, name, target)
         if not os.path.exists(build_dir):
           continue
         print(f'Processing build directory: {name}')
