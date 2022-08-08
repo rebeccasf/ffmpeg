@@ -442,7 +442,6 @@ if (is_component_ffmpeg) {
       # Fixes warnings PIC relocation when building as component.
       ldflags += [
         "-Wl,-Bsymbolic",
-        "-Wl,-L../../build/linux/debian_sid_riscv64-sysroot/usr/lib/riscv64-linux-gnu",
         "-L",
         rebase_path(target_gen_dir, root_build_dir),
       ]
