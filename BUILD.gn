@@ -161,6 +161,8 @@ config("ffmpeg_warnings") {
       # vp3data.h's vp31_inter_dequant stores '128' in an int8_t array.
       "-Wno-constant-conversion",
 
+      "-Wno-deprecated-declaration",
+
       # utils.c does
       # `return LICENSE_PREFIX FFMPEG_LICENSE + sizeof(LICENSE_PREFIX) - 1;`
       # while -Wstring-plus-int wants &FFMPEG_LICENSE[sizeof(LICENSE_PREFIX)-1]
