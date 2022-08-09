@@ -925,9 +925,9 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
   if 'win' not in target_os and 'android' not in target_os:
     configure_flags['Common'].extend([
         '--enable-pic',
-        '--cc=../../third_party/llvm-build/Release+Asserts/bin/clang',
-        '--cxx=../../third_party/llvm-build/Release+Asserts/bin/clang++',
-        '--ld=../../third_party/llvm-build/Release+Asserts/bin/clang',
+        '--cc=' + os.path.join(CHROMIUM_ROOT_DIR + '/third_party/llvm-build/Release+Asserts/bin/clang'),
+        '--cxx=' + os.path.join(CHROMIUM_ROOT_DIR + '/third_party/llvm-build/Release+Asserts/bin/clang++'),
+        '--ld=' + os.path.join(CHROMIUM_ROOT_DIR + '/third_party/llvm-build/Release+Asserts/bin/clang'),
     ])
 
     # Clang Linux will use the first 'ld' it finds on the path, which will
