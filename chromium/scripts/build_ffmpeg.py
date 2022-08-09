@@ -897,11 +897,11 @@ def ConfigureAndBuild(target_arch, target_os, host_os, host_arch, parallel_jobs,
         ])
     elif target_arch == 'riscv64':
       configure_flags['Common'].extend([
-          '--arch=riscv64',
+          '--arch=riscv',
           '--enable-cross-compile',
           '--target-os=linux',
           '--sysroot=' + os.path.join(
-              CHROMIUM_ROOT_DIR, 'build/linux/debian_sid_riscv64-sysroot',
+              CHROMIUM_ROOT_DIR, 'build/linux/debian_sid_riscv64-sysroot'),
           '--extra-cflags=--target=riscv64-linux-gnu',
           '--extra-cflags=-mno-relax',
           '--extra-cflags=-mabi=lp64d',
