@@ -186,6 +186,7 @@ if ((use_linux_config && current_cpu == "riscv64") || (use_linux_config && curre
     "libavutil/hdr_dynamic_metadata.c",
     "libavutil/hdr_dynamic_vivid_metadata.c",
     "libavutil/hwcontext.c",
+    "libavutil/hwcontext_stub.c",
     "libavutil/integer.c",
     "libavutil/intmath.c",
     "libavutil/lfg.c",
