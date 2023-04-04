@@ -887,49 +887,15 @@ Affects:
     libavutil/avsscanf.c
 
 ------------------------------------------------------------------
-commit b71ecd02b47939e530e620d9d0d101463db0f688
+commit 8d12faf8f791f7655b48641ba47ff1ce9cd0d3f3
 Author: Eugene Zemtsov <eugene@chromium.org>
-Date:   Wed Jul 27 13:09:47 2022 -0700
+Date:   Tue Jul 26 20:00:50 2022 -0700
 
-    Roll for M106
+    Remove forward declaration for enum.
 
-    Bug:1344646
-    Change-Id: Idd70cb61d6739d4f782f6cae43f8135e4abfd2eb
-    Reviewed-on: https://chromium-review.googlesource.com/c/chromium/third_party/ffmpeg/+/3786817
-    Reviewed-by: Will Cassella <cassew@chromium.org>
-    Reviewed-by: Dale Curtis <dalecurtis@chromium.org>
+    ISO C forbids forward references to enum types. And this breaks
+    x86 windows build of Chromium.
 
 Affects:
     libavutil/hwcontext_stub.c
-
-------------------------------------------------------------------
-commit 68994b791ea432cbb1ff551ffbe4f40b1b8f93f2
-Author: Frank Liberato <liberato@chromium.org>
-Date:   Fri Oct 28 03:26:22 2022 +0000
-
-    moved ff_ac3_find_syncword out of CONFIG_AC3_PARSER
-
-Affects:
-    libavcodec/ac3_parser.c
-
-------------------------------------------------------------------
-commit c9b87a3225e1422d281ce4454415e5c96b452aa7
-Merge: a249b21db6 2c3107c3e9
-Author: John Rummell <jrummell@chromium.org>
-Date:   Wed Jan 25 16:02:14 2023 -0800
-
-    Merge remote-tracking branch 'upstream/master' into sushi-2023-01-25-15-58-26
-
-Affects:
-    libavutil/tx.c
-
-------------------------------------------------------------------
-commit cbc47d6b462ccd4f431dacad782ac14faba67ab0
-Author: John Rummell <jrummell@chromium.org>
-Date:   Wed Jan 25 16:20:19 2023 -0800
-
-    Update python scripts
-
-Affects:
-    libavutil/tx.c
 
